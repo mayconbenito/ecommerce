@@ -11,13 +11,15 @@ import {
   SearchButton,
   User,
   CartButton,
-  LoginButton
+  LoginButton,
 } from "./styles";
 
 export default function Header() {
   return (
     <Container className="header">
-      <Logo>Shopfy</Logo>
+      <Link href="/">
+        <Logo>Shopfy</Logo>
+      </Link>
       <Search>
         <SearchInput placeholder="Buscar por produtos" />
         <SearchButton>Buscar</SearchButton>

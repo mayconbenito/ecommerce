@@ -14,8 +14,10 @@ export const Container = styled.div`
   }
 `;
 
-export const Logo = styled.h2`
+export const Logo = styled.a`
   font-size: 2.2rem;
+  font-weight: bold;
+  cursor: pointer;
 
   @media (max-width: 800px) {
     font-size: 1.6rem;
