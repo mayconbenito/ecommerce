@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 import axios from 'axios';
 import creditCardType from 'credit-card-type';
 import { cpf as cpfValidator } from 'cpf-cnpj-validator';
@@ -10,7 +10,11 @@ import Order, { OrderType } from '@models/Order';
 import { Request } from '@definitions/express';
 
 export default {
-  async index(req: Request, res: Response): Promise<Response> {
+  async index(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const { page } = req.query;
       let { limit } = req.query;
@@ -34,13 +38,14 @@ export default {
 
       return res.json({ meta, orders });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        error: 'InternalServerError',
-      });
+      return next(err);
     }
   },
-  async store(req: Request, res: Response): Promise<Response> {
+  async store(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const { products, payment, billing } = req.body;
 
@@ -197,10 +202,7 @@ export default {
 
       return res.send({ order: updatedOrder });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        error: 'InternalServerError',
-      });
+      return next(err);
     }
   },
 };

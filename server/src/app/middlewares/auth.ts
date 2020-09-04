@@ -4,11 +4,11 @@ import User from '@models/User';
 
 import { Request } from '@definitions/express';
 
-export default async function(
+async function auth(
   req: Request,
   res: Response,
   next: NextFunction,
-): Promise<Express.Response | void> {
+): Promise<Response | void> {
   const authorizationHeader = req.headers.authorization;
 
   if (!authorizationHeader) {
@@ -31,3 +31,5 @@ export default async function(
 
   return next();
 }
+
+export default auth;

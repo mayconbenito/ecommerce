@@ -1,9 +1,13 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import Product from '@models/Product';
 
 export default {
-  async index(req: Request, res: Response): Promise<Response> {
+  async index(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const { page } = req.query;
       let { limit } = req.query;
@@ -22,10 +26,7 @@ export default {
 
       return res.json({ meta, products });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        error: 'InternalServerError',
-      });
+      return next(err);
     }
   },
 };

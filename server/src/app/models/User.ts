@@ -44,5 +44,4 @@ const schema = new Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-// Reset user cart when finish order
 export default mongoose.model<SchemaType>('User', schema);

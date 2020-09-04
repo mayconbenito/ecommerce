@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 import User from '@models/User';
 
@@ -6,7 +6,11 @@ import generatePasswordHash from '@utils/generatePasswordHash';
 import generateBytes from '@utils/generateBytes';
 
 export default {
-  async store(req: Request, res: Response): Promise<Response> {
+  async store(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const { email, password } = req.body;
 
@@ -36,10 +40,7 @@ export default {
 
       return res.json({ ...user, sessionToken });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        error: 'InternalServerError',
-      });
+      return next(err);
     }
   },
 };

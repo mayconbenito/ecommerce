@@ -1,4 +1,4 @@
-import { Response } from 'express';
+import { Response, NextFunction } from 'express';
 
 import User from '@models/User';
 import Product from '@models/Product';
@@ -6,7 +6,11 @@ import Product from '@models/Product';
 import { Request } from '@definitions/express';
 
 export default {
-  async update(req: Request, res: Response): Promise<Response> {
+  async update(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const { products } = req.body;
 
@@ -40,13 +44,14 @@ export default {
         },
       });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        error: 'InternalServerError',
-      });
+      return next(err);
     }
   },
-  async show(req: Request, res: Response): Promise<Response> {
+  async show(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ): Promise<Response | void> {
     try {
       const user = await User.findById(req.user._id)
         .select('cart')
@@ -69,10 +74,7 @@ export default {
 
       return res.json({ cart: { products, totalOrderAmount } });
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        error: 'InternalServerError',
-      });
+      return next(err);
     }
   },
 };
